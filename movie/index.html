@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Movie Releases UI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Reset and Typography */
+        body {
+            font-family: 'Poppins', sans-serif; /* Modern, clean font */
+            background-color: #f4f7f9; /* Light, neutral background */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* Header Styling */
+        header {
+            background-color: #2c3e50; /* Dark blue header */
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            font-weight: 600;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Mock Note Styling */
+        .mock-note {
+            color: #e74c3c; /* Red for emphasis on mock data */
+            background-color: #fceae9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            border-left: 5px solid #e74c3c;
+            font-size: 0.95em;
+        }
+        .mock-note code {
+            background-color: rgba(231, 76, 60, 0.1);
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        /* Movie List Grid */
+        #movie-list-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
+            gap: 25px;
+            padding-bottom: 50px;
+        }
+
+        /* Movie Card Styling */
+        .movie-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+            transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
+            border-top: 5px solid #3498db; /* Blue accent bar */
+            padding: 20px;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .movie-card h3 {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #2c3e50; /* Dark title color */
+            margin-top: 0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ecf0f1;
+            padding-bottom: 5px;
+        }
+
+        .movie-card p {
+            margin: 5px 0;
+            font-size: 0.95em;
+            color: #555;
+        }
+
+        .movie-card strong {
+            font-weight: 600;
+            color: #444;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        .status-upcoming {
+            background-color: #f1c40f; /* Yellow/Gold for upcoming */
+            color: #444;
+        }
+
+        .status-released {
+            background-color: #2ecc71; /* Green for released */
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎬 Upcoming & Released Movies</h1>
+    </header>
+    
+    <div class="container">
+        <p class="mock-note">
+            NOTE: This list uses **placeholder data (mock API response)** for smooth viewing. The live Django API endpoint is configured at: <code>http://127.0.0.1:8000/api/movies/</code>
+        </p>
+        
+        <div id="movie-list-container">
+            </div>
+    </div>
+
+    <script>
+        // === Placeholder Data (Mock API Response) ===
+        const MOCK_MOVIE_DATA = [
+            { id: 1, title: "The Last Starship", release_date: "2025-01-15", genre: "Sci-Fi", runtime_minutes: 135, is_released: false },
+            { id: 2, title: "City of Shadows", release_date: "2024-12-01", genre: "Thriller", runtime_minutes: 98, is_released: false },
+            { id: 3, title: "Eternal Summer", release_date: "2024-11-20", genre: "Romance", runtime_minutes: 110, is_released: true },
+            { id: 4, title: "The Quantum Key", release_date: "2025-02-10", genre: "Action", runtime_minutes: 125, is_released: false },
+            { id: 5, title: "Mountain Peak Mystery", release_date: "2024-10-05", genre: "Drama", runtime_minutes: 105, is_released: true }
+        ];
+
+        function renderMovieList(movies) {
+            const container = document.getElementById('movie-list-container');
+            container.innerHTML = ''; // Clear existing content
+
+            movies.forEach(movie => {
+                const card = document.createElement('div');
+                card.className = 'movie-card';
+                
+                const statusText = movie.is_released ? 'Released' : 'Upcoming';
+                const statusClass = movie.is_released ? 'status-released' : 'status-upcoming';
+
+                card.innerHTML = `
+                    <h3>${movie.title}</h3>
+                    <p><strong>Release Date:</strong> ${movie.release_date}</p>
+                    <p><strong>Genre:</strong> ${movie.genre}</p>
+                    <p><strong>Runtime:</strong> ${movie.runtime_minutes} min</p>
+                    <span class="status-badge ${statusClass}">${statusText}</span>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load data from MOCK_MOVIE_DATA
+            renderMovieList(MOCK_MOVIE_DATA);
+        });
+    </script>
+</body>
+</html>
